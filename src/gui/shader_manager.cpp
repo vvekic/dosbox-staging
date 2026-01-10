@@ -430,7 +430,7 @@ ShaderPreset ShaderManager::ParseDefaultShaderPreset(const std::string& shader_n
 	preset.name.clear();
 
 	try {
-		const std::regex re("\\s*#pragma\\s+(.+)");
+		const std::regex re("(\\/\\/.*)|(\\/\\*[\\s\\S]*?\\*\\/)|(#pragma\\s+(.*?)(?=\\s*(?:\\/\\/|\\/\\*|$)))");
 
 		std::sregex_iterator next(shader_source.begin(),
 		                          shader_source.end(),
@@ -440,7 +440,12 @@ ShaderPreset ShaderManager::ParseDefaultShaderPreset(const std::string& shader_n
 		while (next != end) {
 			std::smatch match = *next;
 
-			auto pragma = match[1].str();
+			if (!match[4].matched) {
+				++next;
+				continue;
+			}
+
+			auto pragma = match[4].str();
 
 			if (pragma.starts_with("parameter")) {
 				if (const auto maybe_result = ParseParameterPragma(pragma);
