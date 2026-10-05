@@ -62,7 +62,7 @@ jobs:
   build_linux:
     name:    ${{ matrix.conf.name }} ${{ matrix.arch }}
     runs-on: ${{ matrix.conf.os }}${{ matrix.arch == 'arm64' && '-arm' || '' }}
-    if:      github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    if:      false
     strategy:
       matrix:
 #       TODO enable arm64 builds
@@ -331,7 +331,7 @@ jobs:
   publish_dev_build:
     name:    Publish dev build
     needs:   build_linux_release
-    if:      github.ref == 'refs/heads/main'
+    if:      github.ref == 'refs/heads/vv/dev-build-releases-forktest'
     runs-on: ubuntu-24.04
     permissions:
       contents: write

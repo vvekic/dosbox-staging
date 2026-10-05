@@ -24,7 +24,7 @@ let headers = {
 //  "Authorization": "bearer API_TOKEN"
 }
 
-const gh_api_url = "https://api.github.com/repos/dosbox-staging/dosbox-staging/"
+const gh_api_url = "https://api.github.com/repos/vvekic/dosbox-staging/"
 
 // Our CI publishes each platform's latest successful build from 'main' to a
 // rolling prerelease, then moves that release's tag to the commit the build

@@ -8,7 +8,7 @@ on:
     # keeps creating or moving the rolling dev release tags from firing a
     # full build of every platform.
     branches:
-      - '**'
+      - main
 
     paths-ignore:
       - '.clang-format'
