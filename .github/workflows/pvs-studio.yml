@@ -3,6 +3,13 @@ permissions: read-all
 
 on:
   push:
+    # Branch pushes only: building a tag push would rebuild the commit the
+    # tag points at, which has already been built on its branch. This
+    # keeps creating or moving the rolling dev release tags from firing a
+    # full build of every platform.
+    branches:
+      - '**'
+
     paths-ignore:
       - '.clang-format'
       - '.mdl-styles'
