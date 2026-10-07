@@ -71,14 +71,28 @@ jobs:
               exit 0
             fi
 
-            echo "DEV_BUILD_PUBLISH=true" >> "$GITHUB_ENV"
-
-            # Each status links to the workflow run that produced it
+            # Each status links to the workflow run that produced it. Anything
+            # that can post a status can set that link, so make sure it really
+            # is this commit's push run of the platform's workflow.
             for platform in linux macos windows; do
               run_id=$(echo "$statuses" | jq -r --arg context "dev-build/$platform" \
                   '.[] | select(.context == $context) | .target_url | split("/") | last')
+
+              run=""
+              if [[ "$run_id" =~ ^[0-9]+$ ]]; then
+                run=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" \
+                    --jq '[.head_sha, .event, .path] | join(" ")')
+              fi
+
+              if [ "$run" != "$sha push .github/workflows/$platform.yml" ]; then
+                echo "::error::Run '$run_id' is not the $platform push run of $sha"
+                exit 1
+              fi
+
               echo "DEV_BUILD_${platform^^}_RUN_ID=$run_id" >> "$GITHUB_ENV"
             done
+
+            echo "DEV_BUILD_PUBLISH=true" >> "$GITHUB_ENV"
 
   publish:
     name:    Publish dev build
