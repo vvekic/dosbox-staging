@@ -8,3 +8,7 @@
 
 # for github linguist 
 *.h	linguist-language=C++
+
+# vcpkg overlay ports must be byte-for-byte as in the vcpkg repo (which uses
+# '* -text'); CRLF conversion on Windows checkouts breaks applying patches
+vcpkg-ports/** -text
