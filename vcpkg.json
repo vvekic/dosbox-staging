@@ -19,6 +19,7 @@
         "ibus",
         "vulkan",
         "wayland",
+        "wayland-libdecor",
         "x11"
       ]
     },
